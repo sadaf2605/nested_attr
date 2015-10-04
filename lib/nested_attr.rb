@@ -99,6 +99,19 @@ module NestedAttr
 
   end
 
-  puts "registered as 'FactoryGirl.nested_attributes_for(:factory_name)'"
-  FactoryGirl.register_strategy(:nested_attributes_for, NestedAttributesStrategy)
+  if not FactoryGirl.methods.include? :nested_attr_for
+
+  	puts "registered as 'FactoryGirl.nested_attr_for(:factory_name)'"
+  	FactoryGirl.register_strategy(:nested_attr_for, NestedAttributesStrategy)
+
+  end
+  
+  def self.nested_attr_for(factory, except=[])
+    unless except.empty?
+      @@except += except
+    end
+
+  	FactoryGirl.nested_attr_for(factory)
+    
+  end
 end

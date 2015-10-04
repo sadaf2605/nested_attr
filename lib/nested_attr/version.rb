@@ -1,3 +1,3 @@
 module NestedAttr
-  VERSION = "0.0.1"
+  VERSION = "0.0.1.1"
 end

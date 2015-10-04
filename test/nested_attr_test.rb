@@ -9,13 +9,18 @@ class NestedAttrTest < ActiveSupport::TestCase
   end
 
   def test_one_to_one
-  	attr = FactoryGirl.nested_attributes_for(:post)
-  	assert_equal attr["user"]["username"], 'sadaf2605'
+  	attr = NestedAttr.nested_attr_for(:post)
+  	assert_not_nil attr["user"]["username"]
   end
 
-  def test_many
-  	puts attr = FactoryGirl.nested_attributes_for(:user)
-  	assert_equal attr["user"]["username"], 'sadaf2605'
+  def test_many_to_many
+  	attr = NestedAttr.nested_attr_for(:post)
+  	assert_not_nil attr["category_ids"]
+  end
+
+  def test_except
+  	puts attr = NestedAttr.nested_attr_for(:post,except=[:user])
+  	assert_not attr.keys.include? "user"
   end
 
 end
