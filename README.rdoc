@@ -1,5 +1,5 @@
 = NestedAttr
-Using this plugin you can use Factory Girl to test your formastic forms like that of Active AQdmin without much hassle.
+=====Using this plugin you can test your Active Admin formastic forms without much hassle.
 
 == Usage
 === Install:
