@@ -3,13 +3,17 @@ module NestedAttr
   @@except=[]
   @@include_id=[]
 
-  def self.except(m)
-     @@except <<m
+  def self.except(except)
+     @@except <<except
   end
 
-  def self.include(i)
-     @@include_id<<i
+  def self.include(incl)
+     @@include_id<<incl
   end 
+
+
+@@allowd_nested_attributes=[]
+
 
   class NestedAttributesStrategy
     # Author: Sadaf Noor (email@sadafnoor.com)
@@ -53,35 +57,66 @@ module NestedAttr
       
       unless instance.instance_variables.include? :@attributes then return {} end  
       if @created_model.include? instance.class then return {} end
+
+      @@allowd_nested_attributes+=instance.nested_attributes_options.keys
+
       @created_model << instance.class
       
       attrs = instance.attributes.delete_if do |k, _|
         ( %w(id type created_at updated_at).include?(k) or k.end_with?("_id") ) 
       end
       
-      nested_reflections_has_many(instance).each do |ref|
-        attrs.merge!("#{ref.name}_attributes" => instance.send(ref.name).each_with_index.map do |nested_obj,i|
-          {i.to_s => attributes(nested_obj)}
-        end [0])
-      end
+
       nested_reflections_belongs_to(instance).each do |ref|
         attrs.merge!("#{ref.name}" => attributes(instance.send(ref.name)))
       end
-      
-      nested_reflections_has_and_belongs_to_many(instance).each do |ref|
-        attrs.merge!("#{ref.name.to_s.singularize}_ids" => instance.send(ref.name).each.map do |nested_obj|
-          nested_obj.id.to_s
-        end)
+
+      nested_reflections_has_many(instance).each do |ref|
+        if @@allowd_nested_attributes.include? ref.name
+          attrs.merge!("#{ref.name}_attributes" => instance.send(ref.name).each_with_index.map do |nested_obj,i|
+            {i.to_s => attributes(nested_obj)}
+          end [0])
+        else
+          attrs.merge!("#{ref.name.to_s.singularize}_ids" => instance.send(ref.name).each.map do |nested_obj|
+            nested_obj.id.to_s
+          end)  
+        end
+
       end
       
+      nested_reflections_has_and_belongs_to_many(instance).each do |ref|
+        #puts ref.name
+        #puts "+++"
+        #puts @@allowd_nested_attributes[0].class
+        #puts @@allowd_nested_attributes.include? ref.name
+        #puts "---"
+
+        if @@allowd_nested_attributes.include? ref.name
+          attrs.merge!("#{ref.name}_attributes" => instance.send(ref.name).each_with_index.map do |nested_obj,i|
+            {i.to_s => attributes(nested_obj)}
+          end [0])
+        else
+          attrs.merge!("#{ref.name.to_s.singularize}_ids" => instance.send(ref.name).each.map do |nested_obj|
+            nested_obj.id.to_s
+          end)  
+        end
+      end
+
+
+
+
+      
+
       instance.delete 
       
       attrs
     end
    
+
+
     def nested_reflections_has_and_belongs_to_many(instance)
       instance.class.reflections.values.select do |ref|
-        ref.macro == :has_and_belongs_to_many
+        ref.macro == :has_and_belongs_to_many 
       end
     end
 
@@ -101,7 +136,7 @@ module NestedAttr
 
   if not FactoryGirl.methods.include? :nested_attr_for
 
-  	puts "registered as 'FactoryGirl.nested_attr_for(:factory_name)'"
+  	#puts "registered as 'FactoryGirl.nested_attr_for(:factory_name)'"
   	FactoryGirl.register_strategy(:nested_attr_for, NestedAttributesStrategy)
 
   end

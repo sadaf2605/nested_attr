@@ -14,3 +14,6 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 gem 'factory_girl_rails'
+gem 'activeadmin'
+gem 'sqlite3'
+gem 'devise'
