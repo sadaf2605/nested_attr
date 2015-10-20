@@ -1,3 +1,23 @@
 = NestedAttr
+=====Using this plugin you can test your Active Admin formastic forms without much hassle.
+
+== Usage
+=== Install:
+  gem 'nested_attr'
+=== Basic Usage
+
+  FactoryGirl.define do
+    factory :user,class: User do
+      username "sadaf2605"
+    end
+  end
+
+  require 'nested_attr'
+  NestedAttr.nested_attr_for(:user)
+  
+  # If some of your attributes are not needed
+  NestedAttr.nested_attr_for(:user, except=[:post])
+
+
 
 This project rocks and uses MIT-LICENSE.
