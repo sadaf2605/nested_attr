@@ -745,3 +745,87 @@ Processing by Admin::PostsController#edit as HTML
   [1m[36mTag Load (0.1ms)[0m  [1mSELECT "tags".* FROM "tags" INNER JOIN "posts_tags" ON "tags"."id" = "posts_tags"."tag_id" WHERE "posts_tags"."post_id" = ?[0m  [["post_id", 2]]
   Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/resource/edit.html.arb (213.4ms)
 Completed 200 OK in 235ms (Views: 214.7ms | ActiveRecord: 2.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2015-10-21 14:07:45 +0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/railties-4.2.4/lib/rails/templates/rails/welcome/index.html.erb (2.7ms)
+Completed 200 OK in 57ms (Views: 56.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/admin" for 127.0.0.1 at 2015-10-21 14:07:49 +0600
+Processing by Admin::DashboardController#index as HTML
+Completed 401 Unauthorized in 34ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/admin/login" for 127.0.0.1 at 2015-10-21 14:07:49 +0600
+Processing by ActiveAdmin::Devise::SessionsController#new as HTML
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/devise/shared/_links.erb (2.6ms)
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/devise/sessions/new.html.erb within layouts/active_admin_logged_out (112.9ms)
+Completed 200 OK in 1038ms (Views: 952.3ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/admin/login" for 127.0.0.1 at 2015-10-21 14:07:54 +0600
+Processing by ActiveAdmin::Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"taacHXETYMWW9IBT6Bd9G6d3xtrwrdV37ydcRTegYM9Gdrdw62PNn1JYa13c59ipUvZyNgDk7brrvOfcsX7POA==", "admin_user"=>{"email"=>"admin@example.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+  [1m[35mAdminUser Load (0.3ms)[0m  SELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."email" = ?  ORDER BY "admin_users"."id" ASC LIMIT 1  [["email", "admin@example.com"]]
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE "admin_users" SET "current_sign_in_at" = ?, "sign_in_count" = ?, "updated_at" = ? WHERE "admin_users"."id" = ?  [["current_sign_in_at", "2015-10-21 08:07:54.997429"], ["sign_in_count", 2], ["updated_at", "2015-10-21 08:07:54.998862"], ["id", 1]]
+  [1m[36m (135.0ms)[0m  [1mcommit transaction[0m
+Redirected to http://127.0.0.1:3000/admin
+Completed 302 Found in 543ms (ActiveRecord: 135.8ms)
+
+
+Started GET "/admin" for 127.0.0.1 at 2015-10-21 14:07:55 +0600
+Processing by Admin::DashboardController#index as HTML
+  [1m[35mAdminUser Load (0.4ms)[0m  SELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = ?  ORDER BY "admin_users"."id" ASC LIMIT 1  [["id", 1]]
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/page/index.html.arb (296.3ms)
+Completed 200 OK in 330ms (Views: 314.7ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/admin/posts" for 127.0.0.1 at 2015-10-21 14:07:59 +0600
+Processing by Admin::PostsController#index as HTML
+  [1m[36mAdminUser Load (0.2ms)[0m  [1mSELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = ?  ORDER BY "admin_users"."id" ASC LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.2ms)[0m  SELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "posts" LIMIT 30 OFFSET 0) subquery_for_count
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "posts" LIMIT 30 OFFSET 0) subquery_for_count[0m
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM "posts"
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT COUNT(count_column) FROM (SELECT  1 AS count_column FROM "posts" LIMIT 30 OFFSET 0) subquery_for_count[0m
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts"  ORDER BY "posts"."id" desc LIMIT 30 OFFSET 0
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[35mCategory Load (0.2ms)[0m  SELECT "categories".* FROM "categories"
+  [1m[36mTag Load (0.2ms)[0m  [1mSELECT "tags".* FROM "tags"[0m
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/resource/index.html.arb (335.2ms)
+Completed 200 OK in 350ms (Views: 338.1ms | ActiveRecord: 2.3ms)
+
+
+Started GET "/assets/active_admin/orderable-29374dbb55b0012d78a37c614d573bb3474f0779849b478a147d0f1845ca6617.png" for 127.0.0.1 at 2015-10-21 14:08:00 +0600
+
+
+Started GET "/assets/active_admin/datepicker/datepicker-input-icon-d9c2bb73769af777c8a71720d29741f3a499aebd5a043e9a119bd0d9597aed47.png" for 127.0.0.1 at 2015-10-21 14:08:00 +0600
+
+
+Started GET "/admin/posts/new" for 127.0.0.1 at 2015-10-21 14:08:04 +0600
+Processing by Admin::PostsController#new as HTML
+  [1m[35mAdminUser Load (0.2ms)[0m  SELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = ?  ORDER BY "admin_users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mCategory Load (0.2ms)[0m  [1mSELECT "categories".* FROM "categories"[0m
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/resource/new.html.arb (262.2ms)
+Completed 200 OK in 288ms (Views: 283.8ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/admin/posts/new" for 127.0.0.1 at 2015-10-21 14:10:05 +0600
+Processing by Admin::PostsController#new as HTML
+  [1m[35mAdminUser Load (0.2ms)[0m  SELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = ?  ORDER BY "admin_users"."id" ASC LIMIT 1  [["id", 1]]
+  [1m[36mCategory Load (0.2ms)[0m  [1mSELECT "categories".* FROM "categories"[0m
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/activeadmin-1.0.0.pre1/app/views/active_admin/resource/new.html.arb (224.0ms)
+Completed 500 Internal Server Error in 259ms (ActiveRecord: 1.9ms)
+
+ActionView::Template::Error (undefined method `new_record?' for nil:NilClass):
+    1: insert_tag renderer_for(:new)
+  app/admin/posts.rb:22:in `block (2 levels) in <top (required)>'
+
+
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/actionpack-4.2.4/lib/action_dispatch/middleware/templates/rescues/_source.erb (11.8ms)
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/actionpack-4.2.4/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (4.0ms)
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/actionpack-4.2.4/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
+  Rendered /home/sadaf2605/.rvm/gems/ruby-2.2.3/gems/actionpack-4.2.4/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (31.0ms)

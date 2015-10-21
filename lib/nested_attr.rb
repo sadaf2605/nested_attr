@@ -1,18 +1,5 @@
 module NestedAttr
 	require "factory_girl"
-  @@except=[]
-  @@include_id=[]
-
-  def self.except(except)
-     @@except <<except
-  end
-
-  def self.include(incl)
-     @@include_id<<incl
-  end 
-
-
-@@allowd_nested_attributes=[]
 
 
   class NestedAttributesStrategy
@@ -58,8 +45,6 @@ module NestedAttr
       unless instance.instance_variables.include? :@attributes then return {} end  
       if @created_model.include? instance.class then return {} end
 
-      @@allowd_nested_attributes+=instance.nested_attributes_options.keys
-
       @created_model << instance.class
       
       attrs = instance.attributes.delete_if do |k, _|
@@ -72,7 +57,7 @@ module NestedAttr
       end
 
       nested_reflections_has_many(instance).each do |ref|
-        if @@allowd_nested_attributes.include? ref.name
+        if @@has_many_attributes.include? ref.name
           attrs.merge!("#{ref.name}_attributes" => instance.send(ref.name).each_with_index.map do |nested_obj,i|
             {i.to_s => attributes(nested_obj)}
           end [0])
@@ -91,7 +76,7 @@ module NestedAttr
         #puts @@allowd_nested_attributes.include? ref.name
         #puts "---"
 
-        if @@allowd_nested_attributes.include? ref.name
+        if @@has_many_attributes.include? ref.name
           attrs.merge!("#{ref.name}_attributes" => instance.send(ref.name).each_with_index.map do |nested_obj,i|
             {i.to_s => attributes(nested_obj)}
           end [0])
@@ -122,13 +107,13 @@ module NestedAttr
 
     def nested_reflections_has_many(instance)
       instance.class.reflections.values.select do |ref|
-        ref.macro == :has_many && !@@except.include?(ref.name) && instance.respond_to?("#{ref.name}_attributes=")
+        ref.macro == :has_many && instance.respond_to?("#{ref.name}_attributes=")
       end
     end
     
     def nested_reflections_belongs_to(instance)  
       instance.class.reflections.values.select do |ref|
-        ref.macro == :belongs_to && !@@except.include?(ref.name) && instance.respond_to?("#{ref.name}")
+        ref.macro == :belongs_to && instance.respond_to?("#{ref.name}")
       end
     end
 
@@ -141,10 +126,8 @@ module NestedAttr
 
   end
   
-  def self.nested_attr_for(factory, except=[])
-    unless except.empty?
-      @@except += except
-    end
+  def self.nested_attr_for(factory,has_many=[])
+    @@has_many_attributes = has_many
 
   	FactoryGirl.nested_attr_for(factory)
     

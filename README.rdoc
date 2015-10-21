@@ -1,23 +1,76 @@
 = NestedAttr
-=====Using this plugin you can test your Active Admin formastic forms without much hassle.
+=====Using this plugin you can easily test your Active Admin formastic forms.
 
 == Usage
 === Install:
   gem 'nested_attr'
 === Basic Usage
+    require 'nested_attr'
+    NestedAttr.nested_attr_for(:user)
 
-  FactoryGirl.define do
-    factory :user,class: User do
-      username "sadaf2605"
+=== Usage with active admin    
+  Suppose you have a blog and you have these factories:
+
+    FactoryGirl.define do
+      factory :admin_user, :class => AdminUser do
+        sequence(:email){|n| "email#{n}@example.com"}
+        password "password"
+        password_confirmation "password"
+      end
+      
+      factory :post, class: Post do
+        user 
+        title "this is a title"
+        body "this is a huge body"
+
+        after :build do |p|
+          p.categories << create(:category)
+        end
+      end
+
+      factory :category, class: Category do
+        sequence :name do |n|
+          "category#{n}"
+        end
+      end    
     end
-  end
 
-  require 'nested_attr'
-  NestedAttr.nested_attr_for(:user)
+  You have active admin installed at your rails app. At the form of your active admin you have following:
+
+
+  ActiveAdmin.register Post do
+    permit_params :post
+
+      form do |f|
+        f.inputs :title, :body
+        f.inputs :categories
+
+          f.has_many :tags do |t|
+            t.input :name
+          end
+          
+        f.actions
+      end
+
+    end
+
+  Now you want to test your controller using rspec. How? Very simple. Like this:
+
+    include Devise::TestHelpers
+
+    RSpec.describe Admin::PostsController, :type => :controller do
+      before(:each) do
+        @user = FactoryGirl.create(:admin_user)
+        sign_in @user
+      end
+
+      describe "Create" do
+        it "creates post" do
+          expect{post :create, post: NestedAttr.nested_attr_for(:post, has_many=[:tags])}.to change{Post.count}.by(1)
+        end
+      end
+    end
   
-  # If some of your attributes are not needed
-  NestedAttr.nested_attr_for(:user, except=[:post])
-
 
 
 This project rocks and uses MIT-LICENSE.

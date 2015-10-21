@@ -1,7 +1,11 @@
 require 'factory_girl'
 
 FactoryGirl.define do
-
+  factory :admin_user, :class => AdminUser do
+    sequence(:email){|n| "email#{n}@example.com"}
+    password "password"
+    password_confirmation "password"
+  end
 
   factory :category, class: Category do
   #	name "cat 1"
