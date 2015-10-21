@@ -1,12 +1,21 @@
 = NestedAttr
 A little plugin to help you testing your Active Admin formastic forms easily when you are using FactoryGirl.
 
+==Description
+FactoryGirl does not provide any information of its nested attributes when we do `FactoryGirl.attributes_for(:factory_name)` so while we are testing our controller because in in active admin formastic form every post request for create needs those nested attributes. So in this plugin we have tried to solve this plugin. Without creating those post request data in hand you can simply use this plugin.
+
+You can read more details at "Usage with active admin" section
+
 == Usage
 === Install:
   gem 'nested_attr'
 === Basic Usage
     require 'nested_attr'
-    NestedAttr.nested_attr_for(:user_factory)
+    attr = NestedAttr.nested_attr_for(:post_factory) #  {
+                                                     #    categories_ids: [1,2,3],   # f.inputs :categories  
+                                                     #    tags: [ {name: "tech"} ] # f.has_many :tags
+                                                     #  }
+    post :create, user: attr 
 
 === Usage with active admin    
 Suppose you have a blog and you have these factories:
