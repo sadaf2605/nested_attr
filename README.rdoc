@@ -9,7 +9,7 @@
     NestedAttr.nested_attr_for(:user)
 
 === Usage with active admin    
-  Suppose you have a blog and you have these factories:
+Suppose you have a blog and you have these factories:
 
     FactoryGirl.define do
       factory :admin_user, :class => AdminUser do
@@ -35,7 +35,7 @@
       end    
     end
 
-  You have active admin installed at your rails app. At the form of your active admin you have following:
+You have active admin installed at your rails app. At the form of your active admin you have following:
 
 
   ActiveAdmin.register Post do
@@ -54,7 +54,7 @@
 
     end
 
-  Now you want to test your controller using rspec. How? Very simple. Like this:
+Now you want to test your controller using rspec. How? Very simple. Like this:
 
     include Devise::TestHelpers
 
