@@ -1,12 +1,12 @@
 = NestedAttr
-=====Using this plugin you can easily test your Active Admin formastic forms.
+A little plugin to help you testing your Active Admin formastic forms easily when you are using FactoryGirl.
 
 == Usage
 === Install:
   gem 'nested_attr'
 === Basic Usage
     require 'nested_attr'
-    NestedAttr.nested_attr_for(:user)
+    NestedAttr.nested_attr_for(:user_factory)
 
 === Usage with active admin    
 Suppose you have a blog and you have these factories:
