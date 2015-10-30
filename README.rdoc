@@ -2,7 +2,7 @@
 A little plugin to help you testing your Active Admin formastic forms easily when you are using FactoryGirl.
 
 ==Description
-FactoryGirl does not provide any information of its nested attributes when we do `FactoryGirl.attributes_for(:factory_name)` so while we are testing our controller because in in active admin formastic form every post request for create needs those nested attributes. So in this plugin we have tried to solve this plugin. Without creating those post request data in hand you can simply use this plugin.
+FactoryGirl does not provide nested attributes when we do `FactoryGirl.attributes_for(:factory_name)`but when we are testing controller in active admin formastic form, usually we will need those nested attributes, which we usually do by hard coding post request which is very tiring. So in this plugin we have tried to solve this problem. Using this plugin you can get nested attributes just like (active admin) formastic form from your factory.
 
 You can read more details at "Usage with active admin" section
 
